@@ -1,0 +1,829 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Portfolio — Web Designer</title>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:       #050a14;
+      --surface:  #0b1525;
+      --surface2: #101d2e;
+      --v1:       #7c3aed;
+      --v2:       #06b6d4;
+      --v3:       #a78bfa;
+      --text:     #e2e8f0;
+      --muted:    #64748b;
+      --border:   rgba(255,255,255,0.06);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      overflow-x: hidden;
+      line-height: 1.6;
+    }
+
+    /* ─── NAV ─────────────────────────────────────── */
+    #navbar {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      padding: 20px 48px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      background: rgba(5,10,20,0.75);
+      border-bottom: 1px solid var(--border);
+      transition: padding 0.3s ease;
+    }
+
+    .logo {
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 700;
+      font-size: 1.25rem;
+      color: #fff;
+      letter-spacing: -0.5px;
+      text-decoration: none;
+    }
+    .logo span { color: var(--v2); }
+
+    .nav-links {
+      display: flex;
+      list-style: none;
+      gap: 32px;
+      align-items: center;
+    }
+    .nav-links a {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 0.88rem;
+      font-weight: 500;
+      transition: color 0.2s;
+      letter-spacing: 0.2px;
+    }
+    .nav-links a:hover { color: #fff; }
+
+    .nav-cta {
+      background: linear-gradient(135deg, var(--v1), var(--v2)) !important;
+      color: #fff !important;
+      padding: 8px 22px !important;
+      border-radius: 100px;
+      font-size: 0.85rem !important;
+      transition: box-shadow 0.2s, transform 0.2s !important;
+    }
+    .nav-cta:hover {
+      box-shadow: 0 0 20px rgba(124,58,237,0.45);
+      transform: translateY(-1px);
+    }
+
+    /* ─── HERO ─────────────────────────────────────── */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+      padding: 100px 24px 60px;
+      text-align: center;
+    }
+
+    /* Grid backdrop */
+    .hero-grid {
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
+      background-size: 64px 64px;
+      pointer-events: none;
+    }
+
+    /* Breathing orbs */
+    .hero-orbs {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      overflow: hidden;
+    }
+    .orb {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(80px);
+      animation: breathe 10s ease-in-out infinite alternate;
+    }
+    .orb-1 {
+      width: 500px; height: 500px;
+      background: rgba(124,58,237,0.18);
+      top: -150px; left: -100px;
+      animation-delay: 0s;
+    }
+    .orb-2 {
+      width: 400px; height: 400px;
+      background: rgba(6,182,212,0.14);
+      bottom: -100px; right: -80px;
+      animation-delay: 3s;
+    }
+    .orb-3 {
+      width: 280px; height: 280px;
+      background: rgba(167,139,250,0.1);
+      top: 40%; left: 55%;
+      animation-delay: 6s;
+    }
+    @keyframes breathe {
+      0%   { opacity: 0.6; transform: scale(1) translate(0,0); }
+      100% { opacity: 1;   transform: scale(1.15) translate(20px,-20px); }
+    }
+
+    /* Fade mask at the bottom */
+    .hero::after {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 200px;
+      background: linear-gradient(to bottom, transparent, var(--bg));
+      pointer-events: none;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      max-width: 780px;
+    }
+
+    /* Status badge */
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(124,58,237,0.1);
+      border: 1px solid rgba(124,58,237,0.28);
+      padding: 6px 18px;
+      border-radius: 100px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: var(--v3);
+      letter-spacing: 0.4px;
+      margin-bottom: 32px;
+    }
+    .badge-dot {
+      width: 7px; height: 7px;
+      border-radius: 50%;
+      background: var(--v2);
+      animation: pulse 2.2s ease-in-out infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50%       { opacity: 0.35; transform: scale(0.75); }
+    }
+
+    .hero h1 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: clamp(2.8rem, 6vw, 5rem);
+      font-weight: 700;
+      line-height: 1.08;
+      letter-spacing: -2.5px;
+      margin-bottom: 22px;
+      color: #fff;
+    }
+
+    .gradient-text {
+      background: linear-gradient(130deg, var(--v3) 0%, var(--v2) 45%, var(--v1) 100%);
+      background-size: 220%;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      animation: gradShift 5s ease-in-out infinite;
+    }
+    @keyframes gradShift {
+      0%   { background-position: 0%; }
+      50%  { background-position: 100%; }
+      100% { background-position: 0%; }
+    }
+
+    .hero p {
+      font-size: 1.08rem;
+      color: var(--muted);
+      max-width: 480px;
+      margin: 0 auto 40px;
+      line-height: 1.75;
+    }
+
+    .hero-buttons {
+      display: flex;
+      gap: 14px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    /* ─── BUTTONS ──────────────────────────────────── */
+    .btn-primary {
+      display: inline-block;
+      background: linear-gradient(135deg, var(--v1), var(--v2));
+      color: #fff;
+      padding: 14px 32px;
+      border-radius: 100px;
+      border: none;
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+      text-decoration: none;
+      box-shadow: 0 0 30px rgba(124,58,237,0.28);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 0 50px rgba(124,58,237,0.5);
+    }
+
+    .btn-outline {
+      display: inline-block;
+      background: transparent;
+      color: #fff;
+      padding: 14px 32px;
+      border-radius: 100px;
+      border: 1px solid var(--border);
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 0.95rem;
+      font-weight: 500;
+      cursor: pointer;
+      text-decoration: none;
+      transition: border-color 0.2s, background 0.2s;
+    }
+    .btn-outline:hover {
+      border-color: rgba(255,255,255,0.18);
+      background: rgba(255,255,255,0.04);
+    }
+
+    /* Scroll cue */
+    .scroll-cue {
+      position: absolute;
+      bottom: 44px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 2;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      color: var(--muted);
+      font-size: 0.72rem;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      animation: scrollBounce 2.4s ease-in-out infinite;
+    }
+    @keyframes scrollBounce {
+      0%, 100% { transform: translateX(-50%) translateY(0); opacity: 0.6; }
+      50%       { transform: translateX(-50%) translateY(7px); opacity: 1; }
+    }
+
+    /* ─── SECTION SHELL ─────────────────────────────── */
+    .section-wrap {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 100px 48px;
+    }
+
+    .eyebrow {
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--v2);
+      margin-bottom: 12px;
+    }
+
+    .section-title {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: clamp(2rem, 4vw, 3rem);
+      font-weight: 700;
+      letter-spacing: -1.5px;
+      line-height: 1.1;
+      margin-bottom: 16px;
+      color: #fff;
+    }
+
+    .section-desc {
+      color: var(--muted);
+      font-size: 1rem;
+      max-width: 500px;
+      line-height: 1.75;
+    }
+
+    /* ─── ABOUT ────────────────────────────────────── */
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: center;
+    }
+
+    .tag-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 26px;
+    }
+    .tag {
+      background: rgba(124,58,237,0.1);
+      border: 1px solid rgba(124,58,237,0.22);
+      color: var(--v3);
+      padding: 5px 14px;
+      border-radius: 100px;
+      font-size: 0.78rem;
+      font-weight: 600;
+    }
+
+    .about-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 22px;
+      padding: 32px;
+    }
+
+    .about-card-label {
+      font-size: 0.8rem;
+      color: var(--muted);
+      margin-bottom: 14px;
+    }
+    .about-card-headline {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.05rem;
+      font-weight: 600;
+      line-height: 1.5;
+      color: #fff;
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      margin-top: 24px;
+    }
+    .stat {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 20px 16px;
+      text-align: center;
+      transition: border-color 0.3s;
+    }
+    .stat:hover { border-color: rgba(124,58,237,0.3); }
+    .stat-num {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 2rem;
+      font-weight: 700;
+      background: linear-gradient(135deg, var(--v3), var(--v2));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .stat-label {
+      font-size: 0.75rem;
+      color: var(--muted);
+      margin-top: 4px;
+    }
+
+    /* ─── SERVICES ─────────────────────────────────── */
+    .services-section { text-align: center; }
+    .services-section .section-desc { margin: 0 auto; }
+
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+      margin-top: 60px;
+      text-align: left;
+    }
+
+    .service-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 22px;
+      padding: 32px;
+      position: relative;
+      overflow: hidden;
+      transition: border-color 0.35s, transform 0.35s;
+    }
+    .service-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(124,58,237,0.07), transparent 60%);
+      opacity: 0;
+      transition: opacity 0.35s;
+    }
+    .service-card:hover {
+      border-color: rgba(124,58,237,0.35);
+      transform: translateY(-5px);
+    }
+    .service-card:hover::before { opacity: 1; }
+
+    .service-icon {
+      width: 50px; height: 50px;
+      background: linear-gradient(135deg, rgba(124,58,237,0.18), rgba(6,182,212,0.18));
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.4rem;
+      margin-bottom: 22px;
+    }
+    .service-card h3 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.1rem;
+      font-weight: 600;
+      letter-spacing: -0.3px;
+      margin-bottom: 10px;
+      color: #fff;
+    }
+    .service-card p {
+      color: var(--muted);
+      font-size: 0.88rem;
+      line-height: 1.65;
+    }
+
+    /* ─── CTA BAND ─────────────────────────────────── */
+    .cta-band {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 0 48px;
+    }
+    .cta-inner {
+      background: linear-gradient(135deg, rgba(124,58,237,0.12), rgba(6,182,212,0.07));
+      border: 1px solid rgba(124,58,237,0.16);
+      border-radius: 26px;
+      padding: 72px 64px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .cta-inner::before {
+      content: '';
+      position: absolute;
+      width: 320px; height: 320px;
+      background: radial-gradient(circle, rgba(124,58,237,0.16), transparent 70%);
+      top: -160px; right: -80px;
+      pointer-events: none;
+    }
+    .cta-inner::after {
+      content: '';
+      position: absolute;
+      width: 200px; height: 200px;
+      background: radial-gradient(circle, rgba(6,182,212,0.12), transparent 70%);
+      bottom: -80px; left: 60px;
+      pointer-events: none;
+    }
+    .cta-inner h2 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: clamp(1.9rem, 3.5vw, 2.8rem);
+      font-weight: 700;
+      letter-spacing: -1.2px;
+      margin-bottom: 14px;
+      color: #fff;
+      position: relative;
+      z-index: 1;
+    }
+    .cta-inner p {
+      color: var(--muted);
+      margin-bottom: 36px;
+      font-size: 1rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* ─── CONTACT ──────────────────────────────────── */
+    .contact-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 64px;
+      align-items: start;
+    }
+
+    .contact-link {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 20px;
+      margin-top: 24px;
+      text-decoration: none;
+      color: inherit;
+      transition: border-color 0.3s, transform 0.3s;
+    }
+    .contact-link:hover {
+      border-color: rgba(124,58,237,0.35);
+      transform: translateY(-2px);
+    }
+    .contact-icon {
+      width: 46px; height: 46px;
+      background: linear-gradient(135deg, rgba(124,58,237,0.2), rgba(6,182,212,0.2));
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.25rem;
+      flex-shrink: 0;
+    }
+    .contact-text h4 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: #fff;
+      margin-bottom: 2px;
+    }
+    .contact-text p {
+      color: var(--muted);
+      font-size: 0.82rem;
+    }
+
+    .form {
+      display: flex;
+      flex-direction: column;
+      gap: 13px;
+    }
+    .form input,
+    .form textarea {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 13px;
+      padding: 14px 18px;
+      color: #fff;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.9rem;
+      outline: none;
+      transition: border-color 0.25s;
+      resize: vertical;
+    }
+    .form input::placeholder,
+    .form textarea::placeholder { color: var(--muted); }
+    .form input:focus,
+    .form textarea:focus { border-color: var(--v1); }
+    .form textarea { min-height: 120px; }
+
+    /* ─── FOOTER ───────────────────────────────────── */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 28px 48px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      color: var(--muted);
+      font-size: 0.83rem;
+    }
+
+    /* ─── SCROLL REVEAL ─────────────────────────────── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(28px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .delay-1 { transition-delay: 0.1s; }
+    .delay-2 { transition-delay: 0.2s; }
+    .delay-3 { transition-delay: 0.3s; }
+
+    /* ─── RESPONSIVE ────────────────────────────────── */
+    @media (max-width: 900px) {
+      .about-grid,
+      .contact-grid { grid-template-columns: 1fr; gap: 40px; }
+      .services-grid { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 640px) {
+      #navbar { padding: 16px 22px; }
+      .nav-links { display: none; }
+      .section-wrap { padding: 70px 22px; }
+      .cta-band { padding: 0 22px; }
+      .cta-inner { padding: 44px 28px; }
+      footer { flex-direction: column; gap: 10px; text-align: center; padding: 22px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation: none !important; transition-duration: 0.01ms !important; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ── NAV ── -->
+  <nav id="navbar">
+    <a href="#home" class="logo">Port<span>.</span>folio</a>
+    <ul class="nav-links">
+      <li><a href="#about">About</a></li>
+      <li><a href="#services">Services</a></li>
+      <li><a href="#contact">Contact</a></li>
+      <li><a href="#contact" class="nav-cta">Hire Me</a></li>
+    </ul>
+  </nav>
+
+  <!-- ── HERO ── -->
+  <section class="hero" id="home">
+    <div class="hero-grid"></div>
+    <div class="hero-orbs">
+      <div class="orb orb-1"></div>
+      <div class="orb orb-2"></div>
+      <div class="orb orb-3"></div>
+    </div>
+
+    <div class="hero-content">
+      <div class="badge">
+        <span class="badge-dot"></span>
+        Available for freelance work
+      </div>
+
+      <h1>
+        Turning ideas into<br>
+        <span class="gradient-text">beautiful websites</span>
+      </h1>
+
+      <p>I design clean, modern websites for businesses and creators — using AI tools to deliver professional results faster than ever.</p>
+
+      <div class="hero-buttons">
+        <a href="#contact" class="btn-primary">Let's Work Together</a>
+        <a href="#services" class="btn-outline">View Services</a>
+      </div>
+    </div>
+
+    <div class="scroll-cue">
+      <span>Scroll</span>
+      <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/>
+      </svg>
+    </div>
+  </section>
+
+  <!-- ── ABOUT ── -->
+  <section id="about">
+    <div class="section-wrap">
+      <div class="about-grid">
+
+        <div class="reveal">
+          <p class="eyebrow">About Me</p>
+          <h2 class="section-title">Web designer who builds with AI</h2>
+          <p class="section-desc">I combine modern design principles with AI tools like Claude and ChatGPT to deliver polished, professional websites — faster and smarter than the traditional approach.</p>
+          <div class="tag-row">
+            <span class="tag">HTML &amp; CSS</span>
+            <span class="tag">Claude AI</span>
+            <span class="tag">ChatGPT</span>
+            <span class="tag">UI Design</span>
+            <span class="tag">Responsive</span>
+          </div>
+        </div>
+
+        <div class="reveal delay-2">
+          <div class="about-card">
+            <p class="about-card-label">📊 By the numbers</p>
+            <p class="about-card-headline">Design that works beautifully — on every screen, for every client.</p>
+            <div class="stats-grid">
+              <div class="stat">
+                <div class="stat-num">10+</div>
+                <div class="stat-label">Projects Completed</div>
+              </div>
+              <div class="stat">
+                <div class="stat-num">3</div>
+                <div class="stat-label">Core Services</div>
+              </div>
+              <div class="stat">
+                <div class="stat-num">24h</div>
+                <div class="stat-label">Response Time</div>
+              </div>
+              <div class="stat">
+                <div class="stat-num">100%</div>
+                <div class="stat-label">Client Focused</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ── SERVICES ── -->
+  <section id="services">
+    <div class="section-wrap services-section">
+      <p class="eyebrow">What I Offer</p>
+      <h2 class="section-title">Services</h2>
+      <p class="section-desc">Professional web solutions designed to help your business stand out online.</p>
+
+      <div class="services-grid">
+        <div class="service-card reveal">
+          <div class="service-icon">🎨</div>
+          <h3>Website Design</h3>
+          <p>Fully custom, modern websites built from scratch — clean layouts, beautiful typography, and mobile-ready from day one.</p>
+        </div>
+        <div class="service-card reveal delay-1">
+          <div class="service-icon">⚡</div>
+          <h3>Landing Pages</h3>
+          <p>High-converting landing pages designed to capture attention and turn visitors into customers for your business or offer.</p>
+        </div>
+        <div class="service-card reveal delay-2">
+          <div class="service-icon">🏢</div>
+          <h3>Business Websites</h3>
+          <p>Simple, professional websites for small businesses — complete with service pages, contact forms, and your brand identity.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── CTA BAND ── -->
+  <div class="cta-band">
+    <div class="cta-inner reveal">
+      <p class="eyebrow" style="margin-bottom: 14px;">Ready to Start?</p>
+      <h2>Let's build something <span class="gradient-text">great together</span></h2>
+      <p>Have a project in mind? I'd love to hear about it. Reach out and let's make it happen.</p>
+      <a href="#contact" class="btn-primary" style="position:relative;z-index:1;">Start a Project →</a>
+    </div>
+  </div>
+
+  <!-- ── CONTACT ── -->
+  <section id="contact">
+    <div class="section-wrap">
+      <div class="contact-grid">
+
+        <div class="reveal">
+          <p class="eyebrow">Get in Touch</p>
+          <h2 class="section-title">Let's talk</h2>
+          <p class="section-desc">Whether you have a full brief or just a rough idea — I'm here to help you shape it into a website that works.</p>
+
+          <a href="https://wa.me/880XXXXXXXXX" class="contact-link">
+            <div class="contact-icon">💬</div>
+            <div class="contact-text">
+              <h4>WhatsApp</h4>
+              <p>+880XXXXXXXXX — Fastest way to reach me</p>
+            </div>
+          </a>
+        </div>
+
+        <form class="form reveal delay-1" onsubmit="handleSubmit(event)">
+          <input type="text" placeholder="Your Name" required />
+          <input type="email" placeholder="Email Address" required />
+          <textarea placeholder="Tell me about your project..."></textarea>
+          <button type="submit" class="btn-primary" style="border:none;text-align:center;">Send Message →</button>
+        </form>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ── FOOTER ── -->
+  <footer>
+    <a href="#home" class="logo" style="font-size:1rem;">Port<span>.</span>folio</a>
+    <p>© 2026 — All rights reserved</p>
+    <p>Made with ❤ and AI</p>
+  </footer>
+
+  <script>
+    // ── Scroll-reveal observer ──
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(el => {
+        if (el.isIntersecting) {
+          el.target.classList.add('visible');
+          observer.unobserve(el.target);
+        }
+      });
+    }, { threshold: 0.12 });
+
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+    // ── Navbar shrink on scroll ──
+    const nav = document.getElementById('navbar');
+    window.addEventListener('scroll', () => {
+      nav.style.padding = window.scrollY > 60 ? '12px 48px' : '20px 48px';
+    }, { passive: true });
+
+    // ── Contact form feedback ──
+    function handleSubmit(e) {
+      e.preventDefault();
+      const btn = e.target.querySelector('button[type="submit"]');
+      const original = btn.textContent;
+      btn.textContent = '✓ Message Sent!';
+      btn.style.background = 'linear-gradient(135deg, #059669, #10b981)';
+      btn.style.boxShadow = '0 0 30px rgba(5,150,105,0.4)';
+      setTimeout(() => {
+        btn.textContent = original;
+        btn.style.background = '';
+        btn.style.boxShadow = '';
+        e.target.reset();
+      }, 3200);
+    }
+  </script>
+
+</body>
+</html>
